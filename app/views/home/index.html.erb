@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Welcome to Microreddit</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag "application", media: "all", "data-turbo-track": "reload" %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload" %>
+  </head>
+
+  <body>
+    <header>
+      <nav>
+        <% if user_signed_in? %>
+          <%= link_to "Home", authenticated_root_path %> |
+          <%= button_to "New Post", new_post_path %> |
+          <%= button_to "Logout", destroy_user_session_path, method: :delete, data: { turbo: false } %>
+        <% else %>
+          <%= link_to "Home", unauthenticated_root_path %> |
+          <%= link_to "Login", new_user_session_path %> |
+          <%= link_to "Sign Up", new_user_registration_path %>
+        <% end %>
+      </nav>
+    </header>
+
+    <main>
+      <section>
+        <h1>Welcome to Microreddit!</h1>
+        <p>This is a platform where you can create posts, comment, and engage with other users.</p>
+
+        <% if user_signed_in? %>
+          <p>Hello, <%= current_user.username %>! Ready to create a new post?</p>
+          <%= link_to "Create a New Post", new_post_path, class: "btn btn-primary" %>
+        <% else %>
+          <p>Sign up or log in to start posting and interacting with other users.</p>
+          <%= link_to "Sign Up", new_user_registration_path, class: "btn btn-success" %>
+        <% end %>
+      </section>
+
+      <section>
+        <h2>Recent Posts</h2>
+        <ul>
+          <% @posts.each do |post| %>
+            <li>
+              <%= link_to post.content, post_path(post) %> by <%= post.user.username %>
+            </li>
+          <% end %>
+        </ul>
+      </section>
+    </main>
+
+    <footer>
+      <p>&copy; <%= Time.now.year %> Microreddit</p>
+    </footer>
+  </body>
+</html>

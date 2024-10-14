@@ -1,12 +1,10 @@
-<div id="<%= dom_id post %>">
-  <p>
-    <strong>User:</strong>
-    <%= post.user_id %>
-  </p>
+<h1><%= post.user.username %>'s Post</h1>
+<p><%= post.content %></p>
+<p>Likes: <%= post.likes %></p>
 
-  <p>
-    <strong>Content:</strong>
-    <%= post.content %>
-  </p>
-
-</div>
+<h3>Comments</h3>
+<ul>
+  <% post.comments.each do |comment| %>
+    <li><%= comment.content %> - <strong><%= comment.user.username %></strong></li>
+  <% end %>
+</ul>
